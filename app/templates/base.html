@@ -1,0 +1,23 @@
+<html>
+    <head>
+    
+      {% if title %}
+      <title>{{ title }} - Microblog</title>
+      {% else %}
+      <title>Welcome to Microblog</title>
+      {% endif %}
+      <!--<script src="https://kit.fontawesome.com/1c30a57ef9.js" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
+    </head>
+    <body>
+        <div>
+            Go to: <a href="{{ url_for('index') }}">Home</a> <a href="{{ url_for('child') }}">add child</a> <a href="{{ url_for('hobby') }}">add hobby</a> <a href="{{ url_for('pet') }}">add pet</a> <a href="{{ url_for('profile') }}">프로필</a>
+            {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </div>
+        {% block content %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if current_user.is_anonymous %}
+    <h1>You didn't logged in!</h1>
+    <div><p><b>LOG in</b> as soon as possible </p></div>
+    {% for user in User %}
+    <div><p>id is <b>{{ user.identity }}</b></p></div>
+    {% endfor %}
+    {% else %}
+    <h1>여기가 홈페이지임!</h1>
+    <!--
+    <div><p>
+    {% for category in Category %}
+    {{ category.id }} : {{ category.cat1 }}/{{ category.cat2 }}/{{ category.cat3 }}/{{ category.cat4 }}/{{ category.cat5 }}/{{ category.cat6 }}
+    {% endfor %}
+    </p></div>
+    {% for product in Product %}
+    {{ product.id }}-{{ product.name }} : {{ product.price }}원 - {{ product.produce_cat }}
+    {% endfor %}
+    </p></div>
+    {% for purchase in Purchase %}
+    {{ purchase.id }} - {{ purchase.user_id }}- {{ purchase.product_id }} - {{ purchase.purchasetime }}
+    {% endfor %}
+    </p></div>
+    {% for liking in Liking %}
+    {{ liking.id }} - {{ liking.user_id }} - {{ liking.product_id }}
+    {% endfor %}
+    </p></div>-->
+    {% endif %}
+{% endblock %}

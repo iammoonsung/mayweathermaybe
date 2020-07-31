@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ current_user.username }}님이 관심목록!</h1>
+{% for liking in Liking %}
+{{ liking.Product.name }}, {{ liking.Product.price }}원 - {{ liking.Product.liketime }}
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ current_user.username }}님의 프로필!</h1>
+<a href="{{ url_for('liking') }}">관심 목록</a>
+<div><p>id : {{ current_user.id }}</p></div>
+<div><p>아이디 : {{ current_user.identity }}</p></div>
+<div><p>성별 : {{ current_user.gender }}</p></div>
+<div><p>생일 : {{ current_user.birthday }}</p></div>
+<div><p>나이 : {{ current_user.age }}</p></div>
+<div><p>이메일 : {{ current_user.email }}</p></div>
+<div><p>근로여부 : {{ current_user.isworking }}</p></div>
+<div><p>차유무 : {{ current_user.havingcar }}</p></div>
+<div><p>거주지 : {{ current_user.residence }}</p></div>
+<div><p>소득수준 : {{ current_user.income }}</p></div>
+<div><p>가사분배 : {{ current_user.household }}</p></div>
+<div><p>자유시간 : {{ current_user.freetime }}</p></div>
+<div><p> 취미 : 
+{% for hobby in Hobby %}
+    {% if current_user.id==hobby.user_id %}
+    {{ hobby.hobby }}, 
+    {% endif %}
+{% endfor %}
+</p></div>
+{% for children in Children %}
+    {% if current_user.id==children.user_id %}
+    <div><p>id : {{ children.id }}</p>
+        <p>나이 : {{ children.childage }}, 성별 : {{ children.childgender }}</p></div>
+    {% endif %}
+{% endfor %}
+<div><p>
+{% for pet in Pet %}
+    {% if current_user.id==pet.user_id %}
+    id : {{ pet.id }}-종류 : {{ pet.kind }}/
+    {% endif %}
+{% endfor %}
+</p></div>
+{% endblock %}
