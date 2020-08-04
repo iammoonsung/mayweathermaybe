@@ -12,6 +12,10 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+##############################################################
+################### 스키마에 맞게 수정하기 ####################
+##############################################################
+
 class category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cat1 = db.Column(db.String)
@@ -37,28 +41,9 @@ class product(db.Model):
 dirs = os.walk('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/category/')
 
 
-'''
-file = 'C:/Users/my/Desktop/Mayweather/category/남성의류/가디건_조끼/가디건.xlsx'
-sheet = 'Sheet'
-
-df = read_excel(file, sheet_name=sheet)
-print(df.loc[1])
-
-'''
-
-'''
-for dirpath, dirnames, filenames in dirs:
-    if not dirnames:
-        category_file = dirpath.replace('C:/Users/my/Desktop/Mayweather/category/', '')
-        cat = category_file.replace('\\', '/')
-        print(cat)
-
-'''
-
-#db.session.query(category).delete()
-#db.session.commit()
-#db.session.query(product).delete()
-#db.session.commit()
+##############################################################
+#################### 카테고리를 DB에 삽입 #####################
+##############################################################
 
 '''
 cate = []
@@ -93,14 +78,15 @@ for dirpath, dirnames, filenames in dirs:
 '''
 
 
+##############################################################
+################## 크롤링 데이터를 DB에 삽입 ##################
+##############################################################
+
 pymysql.install_as_MySQLdb()
 import MySQLdb
 
 engine = create_engine("mysql+mysqldb://root:"+"dkswnsgh226"+"@localhost/test", encoding='utf-8')
 conn = engine.connect()
-
-end = 0
-
 
 for dirpath, dirnames, filenames in dirs:
     for filename in filenames:
