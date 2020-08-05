@@ -1,5 +1,6 @@
 import os
 from pandas import read_excel
+from pandas.io import sql
 from config import Config
 from flask import Flask
 from flask_migrate import Migrate
@@ -88,6 +89,20 @@ import MySQLdb
 engine = create_engine("mysql+mysqldb://root:"+"dkswnsgh226"+"@localhost/test", encoding='utf-8')
 conn = engine.connect()
 
+categorydb = sql.read_sql_table('category', conn)
+
+## 카테고리 DB에서 ID 가져오기
+def find_categoryid(categorydb, cat):
+    if len(cat) == 3:
+        id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]), 'id']
+    if len(cat) == 4:
+        id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]), 'id']
+    if len(cat) == 5:
+        id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]) & (categorydb['cat5'] == cat[4]), 'id']
+    if len(cat) == 6:
+        id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]) & (categorydb['cat5'] == cat[4]) & (categorydb['cat6'] == cat[5]), 'id']
+    return id
+
 for dirpath, dirnames, filenames in dirs:
     for filename in filenames:
         if '.xlsx' in filename:
@@ -98,6 +113,10 @@ for dirpath, dirnames, filenames in dirs:
             if df.empty:
                 continue
             df.columns = ['category', 'brand', 'productname', 'price', 'comment', 'buy', 'link']
+            category_file = dirpath.replace('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/category/', '')
+            cat = category_file.split('\\')
+            df['category'].values[:] = find_categoryid(categorydb, cat)
+            
             df['comment'] = df['comment'].fillna('0')
             df['buy'] = df['buy'].fillna('0')
             df['price'] = df['price'].apply(lambda x: int(str(x).replace(',','')))
