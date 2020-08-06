@@ -1,6 +1,6 @@
 import os
+import pandas
 from pandas import read_excel
-from pandas.io import sql
 from config import Config
 from flask import Flask
 from flask_migrate import Migrate
@@ -27,19 +27,15 @@ class category(db.Model):
     cat6 = db.Column(db.String)
 
     def __repr__(self):
-        return '<Category {}, {}, {}, {}, {}, {}, {}>'.format(self.id, self.cat1, self.cat2, self.cat3, self.cat4, self.cat5, self.cat6, self.cat7)
+        return '<Category {}, {}, {}, {}, {}, {}, {}>'.format(self.id, self.cat1, self.cat2, self.cat3, self.cat4, self.cat5, self.cat6)
 
 class product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String)
-    brand = db.Column(db.String)
-    productname = db.Column(db.String)
+    name = db.Column(db.String)
     price = db.Column(db.Integer)
-    comment = db.Column(db.Integer)
-    buy = db.Column(db.Integer)
-    link = db.Column(db.String)
+    product_cat = db.Column(db.Integer)
 
-dirs = os.walk('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/category/')
+dirs = os.walk('C:/Users/moonsung/Desktop/real/category/')
 
 
 ##############################################################
@@ -51,7 +47,7 @@ cate = []
 
 for dirpath, dirnames, filenames in dirs:
     if not dirnames:
-        category_file = dirpath.replace('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/category/', '')
+        category_file = dirpath.replace('C:/Users/moonsung/Desktop/real/category/', '')
         cat = category_file.split('\\')
 
         if len(cat) == 3:
@@ -74,8 +70,8 @@ for dirpath, dirnames, filenames in dirs:
             if cat[5] in cate:
                 print(cat)
             cate.append(cat[5])
-        #db.session.add(tmp)
-        #db.session.commit()
+        db.session.add(tmp)
+        db.session.commit()
 '''
 
 
@@ -86,10 +82,10 @@ for dirpath, dirnames, filenames in dirs:
 pymysql.install_as_MySQLdb()
 import MySQLdb
 
-engine = create_engine("mysql+mysqldb://root:"+"dkswnsgh226"+"@localhost/test", encoding='utf-8')
+engine = create_engine("mysql+mysqldb://root:"+"1234"+"@localhost/mayweather", encoding='utf-8')
 conn = engine.connect()
 
-categorydb = sql.read_sql_table('category', conn)
+categorydb = pandas.read_sql_table('category', conn)
 
 ## 카테고리 DB에서 ID 가져오기
 def find_categoryid(categorydb, cat):
@@ -113,15 +109,19 @@ for dirpath, dirnames, filenames in dirs:
             if df.empty:
                 continue
             df.columns = ['category', 'brand', 'productname', 'price', 'comment', 'buy', 'link']
-            category_file = dirpath.replace('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/category/', '')
+            category_file = dirpath.replace('C:/Users/moonsung/Desktop/real/category/', '')
             cat = category_file.split('\\')
             df['category'].values[:] = find_categoryid(categorydb, cat)
-            
             df['comment'] = df['comment'].fillna('0')
             df['buy'] = df['buy'].fillna('0')
             df['price'] = df['price'].apply(lambda x: int(str(x).replace(',','')))
             df['comment'] = df['comment'].apply(lambda x: int(str(x).replace('상품평 ','').replace(',', '')))
             df['buy'] = df['buy'].apply(lambda x: int(str(x).replace('구매 ','').replace(',', '')))
-            df.to_sql(name='product', con=engine, if_exists='append', index=False)
+            dbdf=df[['productname','price','category']]
+            dbdf.rename(columns = {'productname' : 'name'}, inplace = True)
+            dbdf.rename(columns = {'category' : 'product_cat'}, inplace = True)
+            dbdf.to_sql(name='product', con=engine, if_exists='append', index=False)
+
+
 
 

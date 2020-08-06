@@ -9,15 +9,53 @@
     {% endfor %}
     {% else %}
     <h1>여기가 홈페이지임!</h1>
-    <!--
+    {% set count = {'value': 0} %}
     <div><p>
     {% for category in Category %}
-    {{ category.id }} : {{ category.cat1 }}/{{ category.cat2 }}/{{ category.cat3 }}/{{ category.cat4 }}/{{ category.cat5 }}/{{ category.cat6 }}
+    {% if category.cat6 %}
+        <p>{{ category.cat6 }}</p>
+    {% elif category.cat5 %}
+        <p>{{ category.cat5 }}</p>
+    {% elif category.cat4 %}
+        <p>{{ category.cat4 }}</p>
+    {% else %}
+        <p>{{ category.cat3 }}</p>
+    {% endif %}
+    {% if count.update({'value': (count.value - count.value)}) %} {% endif %}
+    {% for product in Product %}
+        {% if product.product_cat == category.id %}
+            {% if count.update({'value': (count.value + 1)}) %} {% endif %}
+            {% if count.value == 6 %}
+                {% break %} 
+            {% endif %}
+        {{ product.name }} : {{ product.price }}원 //  
+        {% endif %}
+    {% endfor %}
     {% endfor %}
     </p></div>
-    {% for product in Product %}
-    {{ product.id }}-{{ product.name }} : {{ product.price }}원 - {{ product.produce_cat }}
+    
+    <!--
+    <div><p>
+    {% set cat_count = 0 %}
+    {% for category in Category %}
+        {% set cat_count=cat_count+1 %}
+        {% if cat_count==6 %}
+            {% break %} 
+        {% endif %}
+    {{ category.cat6 }}
+        {% set prod_count = 0 %}
+        {% for product in Product %}
+            {% set prod_count=prod_count+1 %}
+            {% if prod_count==6 %}
+                {% break %} 
+            {% endif %}
+            {% if product.product_cat == category.id %}
+            {{ product.name }} : {{ product.price }}원 //  
+            {% endif %}
+        {% endfor %}
     {% endfor %}
+    </p></div>    
+    
     </p></div>
     {% for purchase in Purchase %}
     {{ purchase.id }} - {{ purchase.user_id }}- {{ purchase.product_id }} - {{ purchase.purchasetime }}
