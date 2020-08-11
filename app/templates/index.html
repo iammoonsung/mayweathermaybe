@@ -28,42 +28,10 @@
             {% if count.value == 6 %}
                 {% break %} 
             {% endif %}
-        {{ product.name }} : {{ product.price }}원 //  
+        {{ product.name }} {{ product.image }} : {{ product.price }}원 //  
         {% endif %}
     {% endfor %}
     {% endfor %}
     </p></div>
-    
-    <!--
-    <div><p>
-    {% set cat_count = 0 %}
-    {% for category in Category %}
-        {% set cat_count=cat_count+1 %}
-        {% if cat_count==6 %}
-            {% break %} 
-        {% endif %}
-    {{ category.cat6 }}
-        {% set prod_count = 0 %}
-        {% for product in Product %}
-            {% set prod_count=prod_count+1 %}
-            {% if prod_count==6 %}
-                {% break %} 
-            {% endif %}
-            {% if product.product_cat == category.id %}
-            {{ product.name }} : {{ product.price }}원 //  
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-    </p></div>    
-    
-    </p></div>
-    {% for purchase in Purchase %}
-    {{ purchase.id }} - {{ purchase.user_id }}- {{ purchase.product_id }} - {{ purchase.purchasetime }}
-    {% endfor %}
-    </p></div>
-    {% for liking in Liking %}
-    {{ liking.id }} - {{ liking.user_id }} - {{ liking.product_id }}
-    {% endfor %}
-    </p></div>-->
     {% endif %}
 {% endblock %}
