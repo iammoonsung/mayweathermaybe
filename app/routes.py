@@ -28,11 +28,14 @@ def index():
     children = Children.query.all()
     pet = Pet.query.all()
     hobby = Hobby.query.all()
-    category=Category.query.all()
+    #category=db.session.query(Category).get(5)
+    category=Category.query.all()[:5]
+    #category=category.query.all()
     product=Product.query.all()
+    #liking=db.session.query(Category,Product).filter(Category.id==Product.product_cat).groupby(Category.id)
     purchase=Purchase.query.all()
     liking=Liking.query.all()
-    return render_template('index.html', title='home page', User=user, Children=children, Pet=pet, Hobby=hobby, Category=category, Product=product,Purchase=purchase, Liking=liking)
+    return render_template('index.html', title='home page', User=user, Children=children, Pet=pet, Hobby=hobby,Product=product, Category=category,Purchase=purchase, Liking=liking)
 
 @app.route('/profile')
 def profile():
@@ -107,8 +110,8 @@ def liking():
         form = LoginForm()
         return render_template('login.html', title='Add child', form=form)
     liking=db.session.query(Liking,Product).filter(Liking.user_id==current_user.id).filter(Product.id==Liking.product_id)
-    df = pd.read_sql(liking.statement, liking.session.bind)
-    df.to_csv('C:\\Users\\moonsung\\Desktop\\real\\liking.csv',header=False,index=False,encoding='euc-kr')
+    #df = pd.read_sql(liking.statement, liking.session.bind)
+    #df.to_csv('C:\\Users\\moonsung\\Desktop\\real\\liking.csv',header=False,index=False,encoding='euc-kr')
     liking=liking.all()
     return render_template('liking.html', title='Liking', Liking=liking)
 

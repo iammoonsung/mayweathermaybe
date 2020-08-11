@@ -132,7 +132,7 @@ for url in cate_urls:
     req = requests.get(url)
     html = req.text
     soup = BeautifulSoup(html, 'html.parser')
-    categories = soup.select('#gnb > ul > li > a:nth-child(1)')
+    categories = soup.select('#gnb > ul > li > img')
     present = soup.select('#divCategoryLogo > img')
     cate1s.append(present[0].get('alt'))
     for category in categories:

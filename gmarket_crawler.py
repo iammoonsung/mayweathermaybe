@@ -6,7 +6,7 @@ import os
 import math
 import numpy as np
 
-url_file = open('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/after_underwear_urls_selected.txt','r')
+url_file = open('C:/Users/moonsung/Desktop/real/gmarket_crawling_data/after_underwear_urls_selected.txt','r')
 urls = url_file.readlines()
 urls = urls[1589:]
 

@@ -82,6 +82,7 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     price = db.Column(db.Integer)
+    image = db.Column(db.String)
     product_cat = db.Column(db.Integer, db.ForeignKey('category.id'))
 
     def __repr__(self):

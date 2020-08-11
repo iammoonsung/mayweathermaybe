@@ -9,23 +9,29 @@
     {% endfor %}
     {% else %}
     <h1>여기가 홈페이지임!</h1>
-    <!--
+    {% set count = {'value': 0} %}
     <div><p>
     {% for category in Category %}
-    {{ category.id }} : {{ category.cat1 }}/{{ category.cat2 }}/{{ category.cat3 }}/{{ category.cat4 }}/{{ category.cat5 }}/{{ category.cat6 }}
-    {% endfor %}
-    </p></div>
+    {% if category.cat6 %}
+        <p>{{ category.cat6 }}</p>
+    {% elif category.cat5 %}
+        <p>{{ category.cat5 }}</p>
+    {% elif category.cat4 %}
+        <p>{{ category.cat4 }}</p>
+    {% else %}
+        <p>{{ category.cat3 }}</p>
+    {% endif %}
+    {% if count.update({'value': (count.value - count.value)}) %} {% endif %}
     {% for product in Product %}
-    {{ product.id }}-{{ product.name }} : {{ product.price }}원 - {{ product.produce_cat }}
+        {% if product.product_cat == category.id %}
+            {% if count.update({'value': (count.value + 1)}) %} {% endif %}
+            {% if count.value == 6 %}
+                {% break %} 
+            {% endif %}
+        {{ product.name }} {{ product.image }} : {{ product.price }}원 //  
+        {% endif %}
+    {% endfor %}
     {% endfor %}
     </p></div>
-    {% for purchase in Purchase %}
-    {{ purchase.id }} - {{ purchase.user_id }}- {{ purchase.product_id }} - {{ purchase.purchasetime }}
-    {% endfor %}
-    </p></div>
-    {% for liking in Liking %}
-    {{ liking.id }} - {{ liking.user_id }} - {{ liking.product_id }}
-    {% endfor %}
-    </p></div>-->
     {% endif %}
 {% endblock %}
