@@ -1,15 +1,17 @@
 import requests
+from tqdm import tqdm
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
 import time
 import os
 import numpy as np
 
-base = 'http://browse.gmarket.co.kr/list?category='
+base = 'http://browse.gmarket.co.kr'
 
 data = []
 
-'''
+cate_urls = [
+
 #brand clothes
 'http://category.gmarket.co.kr/listview/L100000103.aspx',      #female
 'http://category.gmarket.co.kr/listview/L100000104.aspx',      #male
@@ -28,8 +30,6 @@ data = []
 'http://category.gmarket.co.kr/listview/L100000003.aspx',      #female
 'http://category.gmarket.co.kr/listview/L100000046.aspx',      #male
 'http://category.gmarket.co.kr/listview/L100000070.aspx',      #underwear
-'''
-cate_urls = [
 'http://category.gmarket.co.kr/listview/L100000035.aspx',      #kids cloth
 
 #clothing goods
@@ -128,34 +128,47 @@ cate_urls = [
 cate1s = []
 urls = []
 
-for url in cate_urls:
+for url in tqdm(cate_urls, desc='mid url', mininterval=1):
     req = requests.get(url)
     html = req.text
     soup = BeautifulSoup(html, 'html.parser')
-    categories = soup.select('#gnb > ul > li > img')
+    categories = soup.select('#gnb > ul > li > a:nth-child(1)')
     present = soup.select('#divCategoryLogo > img')
     cate1s.append(present[0].get('alt'))
     for category in categories:
         urls.append([category.get('href').split("'")[3], present[0].get('alt')])
 
+    time.sleep(np.random.uniform(1, 3))
+
+with open('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/mid_urls.txt', 'w') as f:
+    for category in urls:
+        f.write('%s, %s\n' %(category[0], category[1]))
+
 cate2s = []
 cate = []
 
-for url in urls:
+for url in tqdm(urls, desc='small category', mininterval=3):
     req = requests.get(url[0])
     html = req.text
     soup = BeautifulSoup(html, 'html.parser')
-    categories = soup.select('#region__content-filter > div > div:nth-child(1) > div > div.box__filter-body > div > ul > li > ul > li > a > span')
     present = soup.select('#region__content-status-information > div > div > div.box__information-area > div > ul > li:nth-child(3) > span.text.text--active')
+
     if len(present) == 0:
         print(url)
         continue
+
+    categories = soup.select('#region__content-filter > div > div:nth-child(1) > div > div.box__filter-body > div > ul > li > ul > li > a > span')
+    next_urls = soup.select('#region__content-filter > div > div:nth-child(1) > div > div.box__filter-body > div > ul > li > ul > li > a')
+    
     cate2s.append(present[0].text)
-    for category in categories:
-        cate.append([url[1], present[0].text, category.text])
+    for c in range(len(categories)): 
+        cate.append([base+next_urls[c].get('href'), url[1], present[0].text, categories[c].text])
+
     time.sleep(np.random.uniform(1, 3))
 
+seen = set()
+cate = [url for url in cate if not (url[0] in seen or seen.add(url[0]))]
 
-with open('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/gmarket_schema.txt', 'w') as f:
+with open('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/urls.txt', 'w') as f:
     for category in cate:
-        f.write('%s, %s, %s\n' %(category[0], category[1], category[2]))
+        f.write('%s, %s, %s, %s\n' %(category[0], category[1], category[2], category[3]))
