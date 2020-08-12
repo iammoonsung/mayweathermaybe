@@ -16,7 +16,6 @@ action = webdriver.ActionChains(driver)
 
 url_file = open('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/urls.txt','r')
 urls = url_file.readlines()
-urls = urls[1513:2989]
 
 cnt = 0
 write_wb = [None] * len(urls)
@@ -58,6 +57,11 @@ for strurl in urls:
                 child = 4
                 titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(4) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
                 prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(4) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
+            if len(titles) == 0:
+                child = 2
+                titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
+                prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
+        
         else:
             child = 2
             titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
