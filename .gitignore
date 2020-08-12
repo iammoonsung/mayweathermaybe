@@ -1,2 +1,9 @@
 *.pyc
+*.db
+*.txt
+*.mwb
+*.bak
+*.zip
+*.csv
+category/
 __pycache__/
