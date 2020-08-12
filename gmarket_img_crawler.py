@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
 from openpyxl import Workbook
 from tqdm import tqdm
 import numpy as np
@@ -15,6 +16,7 @@ action = webdriver.ActionChains(driver)
 
 url_file = open('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/urls.txt','r')
 urls = url_file.readlines()
+urls = urls[1513:2989]
 
 cnt = 0
 write_wb = [None] * len(urls)
@@ -49,13 +51,18 @@ for strurl in urls:
     for page in range(pages):
         driver.get(url[0] + '&k=0&p=' + str(page+1))
         if page == 0:
+            child = 3
             titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
             prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
+            if len(titles) == 0:
+                child = 4
+                titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(4) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
+                prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(4) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
         else:
+            child = 2
             titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
             prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
-            
-                    
+        
         for item in tqdm(range(len(titles)), desc=cate3 + str(page+1), mininterval=0.3):
 
             action = ActionChains(driver)
@@ -69,12 +76,8 @@ for strurl in urls:
                 brand = ""
                 productname = title[1].text
 
-            if page == 0:
-                img = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__image > a > img')
-                score_parent = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__information > div.box__information-score > ul')
-            else:
-                img = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__image > a > img')
-                score_parent = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__information > div.box__information-score > ul')
+            img = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(' + str(child) + ') > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__image > a > img')
+            score_parent = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(' + str(child) + ') > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__information > div.box__information-score > ul')
             
             scores = score_parent.find_elements_by_css_selector("*")
 
