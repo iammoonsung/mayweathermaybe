@@ -13,11 +13,8 @@ options.add_argument('--ignore-ssl-errors')
 driver = webdriver.Chrome('C:/Users/my/Desktop/Mayweather/chromedriver_win32/chromedriver', chrome_options=options)
 action = webdriver.ActionChains(driver)
 
-url_file = open('C:/Users/my/Desktop/Mayweather/gmarket_crawling_data/after_underwear_urls_selected.txt','r')
+url_file = open('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/urls.txt','r')
 urls = url_file.readlines()
-
-seen = set()
-urls = [url for url in urls if not (url in seen or seen.add(url))]
 
 cnt = 0
 write_wb = [None] * len(urls)
@@ -46,32 +43,37 @@ for strurl in urls:
     
     data = [['category', 'brand', 'productname', 'price', 'comment', 'buy', 'img']]
 
+    write_wb[cnt] = Workbook()
+    write_ws[cnt] = write_wb[cnt].active
+
     for page in range(pages):
         driver.get(url[0] + '&k=0&p=' + str(page+1))
         if page == 0:
             titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
             prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
-            img = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div > div.box__item-container > div.box__image > a > img')
         else:
             titles = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-title > span > a')
             prices = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__information > div.box__information-major > div.box__item-price > div > strong')
-            img = driver.find_elements_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div > div.box__item-container > div.box__image > a > img')
+            
                     
         for item in tqdm(range(len(titles)), desc=cate3 + str(page+1), mininterval=0.3):
 
             action = ActionChains(driver)
             action.move_to_element(titles[item]).perform()            
             title = titles[item].find_elements_by_css_selector("*")
-            
+
             if len(title) == 4:
                 brand = title[1].text
                 productname = title[3].text
             else:
                 brand = ""
                 productname = title[1].text
+
             if page == 0:
+                img = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__image > a > img')
                 score_parent = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(3) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__information > div.box__information-score > ul')
             else:
+                img = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__image > a > img')
                 score_parent = driver.find_element_by_css_selector('#section__inner-content-body-container > div:nth-child(2) > div:nth-child(' + str(item+1) + ') > div.box__item-container > div.box__information > div.box__information-score > ul')
             
             scores = score_parent.find_elements_by_css_selector("*")
@@ -86,19 +88,16 @@ for strurl in urls:
                         comment = score.replace('상품평 ', '')
                     if '구매' in score:
                         buy = score.replace('구매 ' ,'')
-            
-            info = [cate3, brand, productname, prices[item].text.replace(',', ''), comment, buy, img[item].get_attribute('src')]
 
-            data.append(info)
+            img = img.get_attribute('src')
+            if 'pics' in img:
+                continue
 
-    write_wb[cnt] = Workbook()
-    write_ws[cnt] = write_wb[cnt].active
+            info = [cate3, brand, productname, prices[item].text.replace(',', ''), comment, buy, img]
+            write_ws[cnt].append(info)
 
-    for info in data:
-        write_ws[cnt].append(info)
-    
+        time.sleep(np.random.uniform(1, 3))
+                
     os.makedirs('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/' + cate1.replace('/','_') + '/' + cate2.replace('/','_'), exist_ok=True)
     write_wb[cnt].save('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/' + cate1.replace('/','_') + '/' + cate2.replace('/','_') + '/' + cate3.replace('/','_') + '.xlsx')
     cnt += 1
-    if cnt == 10:
-        break
