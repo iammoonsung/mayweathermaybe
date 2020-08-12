@@ -33,22 +33,22 @@ class product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     price = db.Column(db.Integer)
+    image = db.Column(db.String)
     product_cat = db.Column(db.Integer)
 
-dirs = os.walk('C:/Users/moonsung/Desktop/real/category/')
+dirs = os.walk('/home/ubuntu/real/mayweathermaybe/category/')
 
 
 ##############################################################
 #################### 카테고리를 DB에 삽입 #####################
 ##############################################################
-
 '''
 cate = []
 
 for dirpath, dirnames, filenames in dirs:
     if not dirnames:
-        category_file = dirpath.replace('C:/Users/moonsung/Desktop/real/category/', '')
-        cat = category_file.split('\\')
+        category_file = dirpath.replace('/home/ubuntu/real/mayweathermaybe/category/', '')
+        cat = category_file.split('/')
 
         if len(cat) == 3:
             tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2])
@@ -72,6 +72,7 @@ for dirpath, dirnames, filenames in dirs:
             cate.append(cat[5])
         db.session.add(tmp)
         db.session.commit()
+
 '''
 
 
@@ -82,7 +83,7 @@ for dirpath, dirnames, filenames in dirs:
 pymysql.install_as_MySQLdb()
 import MySQLdb
 
-engine = create_engine("mysql+mysqldb://root:"+"1234"+"@localhost/mayweather", encoding='utf-8')
+engine = create_engine("mysql+mysqldb://root:"+"testtest"+"@13.125.205.2/mayweather", encoding='utf-8')
 conn = engine.connect()
 
 categorydb = pandas.read_sql_table('category', conn)
@@ -103,14 +104,15 @@ for dirpath, dirnames, filenames in dirs:
     for filename in filenames:
         if '.xlsx' in filename:
             filename = filename.replace('~$', '')
+            #
             excel = dirpath.replace('\\', '/') + '/' + filename
             sheet = 'Sheet'
             df = read_excel(excel, sheet_name=sheet)
             if df.empty:
                 continue
             df.columns = ['category', 'brand', 'productname', 'price', 'comment', 'buy', 'link']
-            category_file = dirpath.replace('C:/Users/moonsung/Desktop/real/category/', '')
-            cat = category_file.split('\\')
+            category_file = dirpath.replace('/home/ubuntu/real/mayweathermaybe/category/', '')
+            cat = category_file.split('/')
             df['category'].values[:] = find_categoryid(categorydb, cat)
             df['comment'] = df['comment'].fillna('0')
             df['buy'] = df['buy'].fillna('0')
