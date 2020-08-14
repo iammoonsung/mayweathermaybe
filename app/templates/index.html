@@ -28,7 +28,7 @@
             {% if count.value == 6 %}
                 {% break %} 
             {% endif %}
-        {{ product.name }} {{ product.image }} : {{ product.price }}원 //  
+        {{ product.name }} <img src="{{ product.image }}"> : {{ product.price }}원 //  
         {% endif %}
     {% endfor %}
     {% endfor %}

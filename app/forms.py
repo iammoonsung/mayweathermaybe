@@ -41,6 +41,13 @@ class ChildForm(FlaskForm):
     childgender = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int)
     submit = SubmitField('자녀 추가')
 
+class MoreinfoForm(FlaskForm):
+    childage = IntegerField('자녀 나이')
+    childgender = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int)
+    kind = StringField('반려동물 종류')
+    hobby = StringField('취미')
+    submit = SubmitField('정보 추가')
+
 class PetForm(FlaskForm):
     kind = StringField('종류', validators=[DataRequired()])
     submit = SubmitField('반려동물 추가')

@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for
 from app import app
-from app.forms import LoginForm, RegistrationForm, ChildForm, PetForm, HobbyForm, BasicinfoForm
+from app.forms import LoginForm, RegistrationForm, ChildForm, PetForm, HobbyForm, BasicinfoForm, MoreinfoForm
 from flask_login import current_user, login_user
 from flask_login import logout_user
 from flask_login import login_required
@@ -115,19 +115,37 @@ def liking():
     liking=liking.all()
     return render_template('liking.html', title='Liking', Liking=liking)
 
+@app.route('/moreinfo', methods=['GET', 'POST'])
+def moreinfo():
+    if current_user.is_anonymous:
+        form = LoginForm()
+        return render_template('login.html', title='Add child', form=form)
+    form = MoreinfoForm()
+    if form.validate_on_submit():
+        children = Children(user_id = current_user.id, childage=form.childage.data, childgender=form.childgender.data)
+        db.session.add(children)
+        db.session.commit()
+        pet = Pet(user_id = current_user.id, kind=form.kind.data)
+        db.session.add(pet)
+        db.session.commit()
+        hobby = Hobby(user_id = current_user.id, hobby=form.hobby.data)
+        db.session.add(hobby)
+        db.session.commit()
+        return redirect(url_for('profile'))
+    return render_template('moreinfo.html', title='More info', form=form)
 
 @app.route('/child', methods=['GET', 'POST'])
 def child():
     if current_user.is_anonymous:
         form = LoginForm()
-        return render_template('login.html', title='Add child', form=form)
+        return render_template('login.html', title='sign in', form=form)
     form = ChildForm()
     if form.validate_on_submit():
         children = Children(user_id = current_user.id, childage=form.childage.data, childgender=form.childgender.data)
         db.session.add(children)
         db.session.commit()
         return redirect(url_for('index'))
-    return render_template('child.html', title='Add Child', form=form)
+    return render_template('child.html', title='Add child', form=form)
 
 @app.route('/pet', methods=['GET', 'POST'])
 def pet():

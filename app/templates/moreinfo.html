@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>추가정보 입력!</h1>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.childage.label }}<br>
+            {{ form.childage(size=32) }}<br>
+            {% for error in form.childage.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.childgender.label }}<br>
+            {{ form.childgender(size=32) }}<br>
+        </p>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.kind.label }}<br>
+            {{ form.kind(size=32) }}<br>
+            {% for error in form.kind.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.hobby.label }}<br>
+            {{ form.hobby(size=32) }}<br>
+            {% for error in form.hobby.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+
+        <p>{{ form.submit() }}</p>
+        <p>취소하시겠습니까? <a href="{{ url_for('profile') }}">돌아가기!</a></p>
+    </form>
+{% endblock %}

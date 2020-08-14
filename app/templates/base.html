@@ -11,7 +11,7 @@
     </head>
     <body>
         <div>
-            Go to: <a href="{{ url_for('index') }}">Home</a> <a href="{{ url_for('child') }}">add child</a> <a href="{{ url_for('hobby') }}">add hobby</a> <a href="{{ url_for('pet') }}">add pet</a> <a href="{{ url_for('profile') }}">프로필</a>
+            Go to: <a href="{{ url_for('index') }}">Home</a><!-- <a href="{{ url_for('hobby') }}">add hobby</a> <a href="{{ url_for('pet') }}">add pet</a>--> <a href="{{ url_for('profile') }}">프로필</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
             {% else %}
