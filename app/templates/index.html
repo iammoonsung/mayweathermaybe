@@ -8,30 +8,36 @@
     <div><p>id is <b>{{ user.identity }}</b></p></div>
     {% endfor %}
     {% else %}
-    <h1>여기가 홈페이지임!!!</h1>
+    <h1>여기가 홈페이지임 o0o!!</h1>
     {% set count = {'value': 0} %}
-    <div><p>
+    {% set count2 = {'value': 0} %}
     {% for category in Category %}
-    {% if category.cat6 %}
-        <p>{{ category.cat6 }}</p>
-    {% elif category.cat5 %}
-        <p>{{ category.cat5 }}</p>
-    {% elif category.cat4 %}
-        <p>{{ category.cat4 }}</p>
-    {% else %}
-        <p>{{ category.cat3 }}</p>
-    {% endif %}
-    {% if count.update({'value': (count.value - count.value)}) %} {% endif %}
-    {% for product in Product %}
-        {% if product.product_cat == category.id %}
-            {% if count.update({'value': (count.value + 1)}) %} {% endif %}
-            {% if count.value == 6 %}
-                {% break %} 
-            {% endif %}
-        {{ product.name }} <img src="{{ product.image }}"> : {{ product.price }}원 //  
+    <a href="#" class="categories category{{count2.value}}">
+        {% if category.cat6 %}
+            <p>{{ category.cat6 }}</p>
+        {% elif category.cat5 %}
+            <p>{{ category.cat5 }}</p>
+        {% elif category.cat4 %}
+            <p>{{ category.cat4 }}</p>
+        {% else %}
+            <p>{{ category.cat3 }}</p>
         {% endif %}
+    </a>
+    {% if count.update({'value': (count.value - count.value)}) %} {% endif %}
+    <div class="inside_category products{{count2.value}}">
+        <a href="#" class="gobacks goback{{count2.value}}"><i class="fas fa-arrow-left"></i>&ensp; GOBACK</a><br>
+        {% for product in Product %}
+            {% if product.product_cat == category.id %}
+                {% if count.update({'value': (count.value + 1)}) %} {% endif %}
+                {% if count.value == 6 %}
+                    {% break %} 
+                {% endif %}
+                <a href="https://search.shopping.naver.com/search/all?query={{ product.name }}">{{ product.name }} <img src="{{ product.image }}"> : {{ product.price }}원 // </a><br> 
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% if count2.update({'value': (count2.value + 1)}) %} {% endif %}
     {% endfor %}
-    {% endfor %}
-    </p></div>
+
     {% endif %}
 {% endblock %}

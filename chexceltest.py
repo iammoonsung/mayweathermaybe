@@ -14,7 +14,7 @@ from openpyxl import Workbook
 import time
 import numpy as np
 
-excel = 'C:/Users/moonsung/Desktop/real/category/실용/렌탈/렌탈/공기청정기 렌탈/청호나이사.xlsx'
+excel = '/home/ubuntu/real/mayweathermaybe/category/자기만족/Style/뷰티/화장품/팩_마스크/팩_마스크용품.xlsx'
 df2 = []
 wb = load_workbook(filename = excel, read_only=False, data_only=False)
 sheet = wb.active
@@ -26,8 +26,9 @@ for i in range(1, count+1):
     html = req.text
     soup = BeautifulSoup(html, 'html.parser')
     image = soup.select('#container > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > ul > li:nth-child(1) > a > img')
-    imglinks = image[0].get('src')
-    sheet['G' + str(i)].value = imglinks
-    cell = sheet['G' + str(i)]
+    if len(image) > 0 :
+        imglinks = image[0].get('src')
+        sheet['G' + str(i)].value = imglinks
+        cell = sheet['G' + str(i)]
 
 wb.save(excel)

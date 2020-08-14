@@ -116,12 +116,14 @@ for dirpath, dirnames, filenames in dirs:
             df['category'].values[:] = find_categoryid(categorydb, cat)
             df['comment'] = df['comment'].fillna('0')
             df['buy'] = df['buy'].fillna('0')
+            df['link'] = df['link'].fillna('0')
             df['price'] = df['price'].apply(lambda x: int(str(x).replace(',','')))
             df['comment'] = df['comment'].apply(lambda x: int(str(x).replace('상품평 ','').replace(',', '')))
             df['buy'] = df['buy'].apply(lambda x: int(str(x).replace('구매 ','').replace(',', '')))
-            dbdf=df[['productname','price','category']]
+            dbdf=df[['productname','price','link','category']]
             dbdf.rename(columns = {'productname' : 'name'}, inplace = True)
             dbdf.rename(columns = {'category' : 'product_cat'}, inplace = True)
+            dbdf.rename(columns = {'link' : 'image'}, inplace = True)
             dbdf.to_sql(name='product', con=engine, if_exists='append', index=False)
 
 

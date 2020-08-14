@@ -1,0 +1,13 @@
+.inside_category {
+    overflow: scroll;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 100%;
+    transform: translate(-50%, 0);
+    display: none;
+    height: 100%;
+    background-color: white;
+    z-index: 3;
+    transform: translateX(-100%);
+}
