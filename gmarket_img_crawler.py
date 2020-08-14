@@ -16,6 +16,7 @@ action = webdriver.ActionChains(driver)
 
 url_file = open('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/urls.txt','r')
 urls = url_file.readlines()
+urls = urls[2769:2989]
 
 cnt = 0
 write_wb = [None] * len(urls)
@@ -108,3 +109,5 @@ for strurl in urls:
     os.makedirs('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/' + cate1.replace('/','_') + '/' + cate2.replace('/','_'), exist_ok=True)
     write_wb[cnt].save('C:/Users/my/Desktop/Mayweather/gmarket_img_crawling_data/' + cate1.replace('/','_') + '/' + cate2.replace('/','_') + '/' + cate3.replace('/','_') + '.xlsx')
     cnt += 1
+    if not cnt % 100:
+        driver.delete_all_cookies()
