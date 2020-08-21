@@ -1,26 +1,28 @@
-<html>
-    <head>
-    
-      {% if title %}
-      <title>{{ title }} - Microblog</title>
-      {% else %}
-      <title>Welcome to Microblog</title>
-      {% endif %}
-      <script src="https://kit.fontawesome.com/1c30a57ef9.js" crossorigin="anonymous"></script>
-      <link rel="shortcut icon" href="https://image.flaticon.com/icons/svg/758/758187.svg">
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    </head>
-    <body>
-        <div>
-            Go to: <a href="{{ url_for('index') }}">Home</a><!-- <a href="{{ url_for('hobby') }}">add hobby</a> <a href="{{ url_for('pet') }}">add pet</a>--> <a href="{{ url_for('profile') }}">프로필</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
-        </div>
-        {% block content %}{% endblock %}
-        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        <script src="{{ url_for('static', filename='js/main.js') }}"></script>    
-    </body>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>{{ title }} - Microblog</title>
+    {% else %}
+    <title>Welcome to Microblog</title>
+    {% endif %}
+    <script src="https://kit.fontawesome.com/1c30a57ef9.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="https://image.flaticon.com/icons/svg/758/758187.svg">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div>
+        Go to: <a href="{{ url_for('index') }}">Home</a> <a href="{{ url_for('profile') }}">프로필</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </div>
+    {% block content %}{% endblock %}
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
 </html>

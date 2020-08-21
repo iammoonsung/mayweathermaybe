@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 from flask_wtf import FlaskForm
 from datetime import datetime, date
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, DateField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, DateField, IntegerField, validators
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User, Children, Pet, Hobby
 
@@ -32,8 +34,16 @@ class BasicinfoForm(FlaskForm):
     username = StringField('이름', validators=[DataRequired()])
     gender = RadioField('성별', choices=[(1,'남'),(2,'여')],coerce=int)
     birthday = DateField('생일', format='%Y%m%d', validators=[DataRequired()])
-    childage = IntegerField('자녀 나이', validators=[DataRequired()])
-    childgender = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int)
+    childage0 = IntegerField('자녀 나이', validators=[validators.optional()])
+    childgender0 = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int,validators=[validators.optional()])
+    childage1 = IntegerField('자녀 나이', validators=[validators.optional()])
+    childgender1 = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int,validators=[validators.optional()])
+    childage2 = IntegerField('자녀 나이', validators=[validators.optional()])
+    childgender2 = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int,validators=[validators.optional()])
+    childage3 = IntegerField('자녀 나이', validators=[validators.optional()])
+    childgender3 = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int,validators=[validators.optional()])
+    childage4 = IntegerField('자녀 나이', validators=[validators.optional()])
+    childgender4 = RadioField('자녀 성별', choices=[(1,'남'),(2,'여')],coerce=int,validators=[validators.optional()])
     submit = SubmitField('제출')
 
 class ChildForm(FlaskForm):

@@ -45,3 +45,13 @@ $(".category4").click(function(){
 $(".goback4").click(function(){
     $(".products4").animate({width:"toggle"},300);
 })
+
+function doChild() {
+    var here = document.querySelector("#here");
+    here.innerHTML = "";
+    var cnt = document.getElementById("childNum").value;
+    var i = 0;
+    for (i=0; i<cnt; i++) {
+        here.innerHTML += $("#childbox"+i).html();
+    }
+}

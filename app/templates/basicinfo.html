@@ -26,16 +26,56 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.childage.label }}<br>
-            {{ form.childage(size=32) }}<br>
-            {% for error in form.childage.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.childgender.label }}<br>
-            {{ form.childgender(size=32) }}<br>
+            <label for="childNum">자녀 수 입력: </label>
+            <input type="text" id="childNum">
+            <input type="button" onclick="doChild()" value="확인">
+            <div id="here"></div>
         </p>
         <p>{{ form.submit() }}</p>
     </form>
+    <div id="childbox0" style="display:none">
+        {{ form.childage0.label }}<br>
+        {{ form.childage0(size=32) }}<br>
+        {% for error in form.childage0.errors %}
+        <span style='color: red;'>[{{ error }}]</span>
+        {% endfor %}
+        {{ form.childgender0.label }}<br>
+        {{ form.childgender0(size=32) }}<br>
+    </div>
+    <div id="childbox1" style="display:none">
+        {{ form.childage1.label }}<br>
+        {{ form.childage1(size=32) }}<br>
+        {% for error in form.childage1.errors %}
+        <span style='color: red;'>[{{ error }}]</span>
+        {% endfor %}
+        {{ form.childgender1.label }}<br>
+        {{ form.childgender1(size=32) }}<br>
+    </div>
+    <div id="childbox2" style="display:none">
+        {{ form.childage2.label }}<br>
+        {{ form.childage2(size=32) }}<br>
+        {% for error in form.childage2.errors %}
+        <span style='color: red;'>[{{ error }}]</span>
+        {% endfor %}
+        {{ form.childgender2.label }}<br>
+        {{ form.childgender2(size=32) }}<br>
+    </div>
+    <div id="childbox3" style="display:none">
+        {{ form.childage3.label }}<br>
+        {{ form.childage3(size=32) }}<br>
+        {% for error in form.childage3.errors %}
+        <span style='color: red;'>[{{ error }}]</span>
+        {% endfor %}
+        {{ form.childgender3.label }}<br>
+        {{ form.childgender3(size=32) }}<br>
+    </div>
+    <div id="childbox4" style="display:none">
+        {{ form.childage4.label }}<br>
+        {{ form.childage4(size=32) }}<br>
+        {% for error in form.childage4.errors %}
+        <span style='color: red;'>[{{ error }}]</span>
+        {% endfor %}
+        {{ form.childgender4.label }}<br>
+        {{ form.childgender4(size=32) }}<br>
+    </div>
 {% endblock %}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import os
 import pandas
 from pandas import read_excel
@@ -25,9 +26,10 @@ class category(db.Model):
     cat4 = db.Column(db.String)
     cat5 = db.Column(db.String)
     cat6 = db.Column(db.String)
+    cat7 = db.Column(db.String)
 
     def __repr__(self):
-        return '<Category {}, {}, {}, {}, {}, {}, {}>'.format(self.id, self.cat1, self.cat2, self.cat3, self.cat4, self.cat5, self.cat6)
+        return '<Category {}, {}, {}, {}, {}, {}, {}>'.format(self.id, self.cat1, self.cat2, self.cat3, self.cat4, self.cat5, self.cat6, self.cat7)
 
 class product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -36,42 +38,44 @@ class product(db.Model):
     image = db.Column(db.String)
     product_cat = db.Column(db.Integer)
 
-dirs = os.walk('/home/ubuntu/real/mayweathermaybe/category/')
+dirs = os.walk('/home/ubuntu/category/')
 
-
+'''
 ##############################################################
 #################### 카테고리를 DB에 삽입 #####################
 ##############################################################
-'''
+
 cate = []
 
 for dirpath, dirnames, filenames in dirs:
     if not dirnames:
-        category_file = dirpath.replace('/home/ubuntu/real/mayweathermaybe/category/', '')
+        category_file = dirpath.replace('/home/ubuntu/category/', '')
         cat = category_file.split('/')
+        for filename in filenames:
+            if len(cat) == 3:
+                tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = filename.replace('.xlsx', ''))
+                if cat[2] in cate:
+                    print(cat)
+                cate.append(cat[2])
+            elif len(cat) == 4:
+                tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = cat[3], cat5 = filename.replace('.xlsx', ''))
+                if cat[3] in cate:
+                    print(cat)
+                cate.append(cat[3])
+            elif len(cat) == 5:
+                tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = cat[3], cat5 = cat[4], cat6 = filename.replace('.xlsx', ''))
+                if cat[4] in cate:
+                    print(cat)
+                cate.append(cat[4])
+            elif len(cat) == 6:
+                tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = cat[3], cat5 = cat[4], cat6 = cat[5], cat7 = filename.replace('.xlsx', ''))
+                if cat[5] in cate:
+                    print(cat)
+                cate.append(cat[5])
+            db.session.add(tmp)
+            db.session.commit()
 
-        if len(cat) == 3:
-            tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2])
-            if cat[2] in cate:
-                print(cat)
-            cate.append(cat[2])
-        elif len(cat) == 4:
-            tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = cat[3])
-            if cat[3] in cate:
-                print(cat)
-            cate.append(cat[3])
-        elif len(cat) == 5:
-            tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = cat[3], cat5 = cat[4])
-            if cat[4] in cate:
-                print(cat)
-            cate.append(cat[4])
-        elif len(cat) == 6:
-            tmp = category(cat1 = cat[0], cat2 = cat[1], cat3 = cat[2], cat4 = cat[3], cat5 = cat[4], cat6 = cat[5])
-            if cat[5] in cate:
-                print(cat)
-            cate.append(cat[5])
-        db.session.add(tmp)
-        db.session.commit()
+print("done")
 
 '''
 
@@ -90,14 +94,16 @@ categorydb = pandas.read_sql_table('category', conn)
 
 ## 카테고리 DB에서 ID 가져오기
 def find_categoryid(categorydb, cat):
-    if len(cat) == 3:
-        id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]), 'id']
+    print(len(cat))
     if len(cat) == 4:
         id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]), 'id']
     if len(cat) == 5:
         id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]) & (categorydb['cat5'] == cat[4]), 'id']
     if len(cat) == 6:
         id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]) & (categorydb['cat5'] == cat[4]) & (categorydb['cat6'] == cat[5]), 'id']
+    if len(cat) == 7:
+        id = categorydb.loc[(categorydb['cat1'] == cat[0]) & (categorydb['cat2'] == cat[1]) & (categorydb['cat3'] == cat[2]) & (categorydb['cat4'] == cat[3]) & (categorydb['cat5'] == cat[4]) & (categorydb['cat6'] == cat[5]) & (categorydb['cat7'] == cat[6]), 'id']
+    print(len(id))
     return id
 
 for dirpath, dirnames, filenames in dirs:
@@ -105,13 +111,14 @@ for dirpath, dirnames, filenames in dirs:
         if '.xlsx' in filename:
             filename = filename.replace('~$', '')
             #
-            excel = dirpath.replace('\\', '/') + '/' + filename
+            excel = dirpath + '/' + filename
             sheet = 'Sheet'
             df = read_excel(excel, sheet_name=sheet)
             if df.empty:
                 continue
             df.columns = ['category', 'brand', 'productname', 'price', 'comment', 'buy', 'link']
-            category_file = dirpath.replace('/home/ubuntu/real/mayweathermaybe/category/', '')
+            category_file = excel.replace('/home/ubuntu/category/', '')
+            category_file = category_file.replace('.xlsx', '')
             cat = category_file.split('/')
             df['category'].values[:] = find_categoryid(categorydb, cat)
             df['comment'] = df['comment'].fillna('0')
@@ -125,7 +132,6 @@ for dirpath, dirnames, filenames in dirs:
             dbdf.rename(columns = {'category' : 'product_cat'}, inplace = True)
             dbdf.rename(columns = {'link' : 'image'}, inplace = True)
             dbdf.to_sql(name='product', con=engine, if_exists='append', index=False)
-
 
 
 

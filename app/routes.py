@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+
 from flask import render_template, flash, redirect, url_for
 from app import app
 from app.forms import LoginForm, RegistrationForm, ChildForm, PetForm, HobbyForm, BasicinfoForm, MoreinfoForm
@@ -97,9 +99,26 @@ def basicinfo():
     form = BasicinfoForm()
     if form.validate_on_submit():
         current_user.set_info(form.username.data,form.gender.data,form.birthday.data)
-        children = Children(user_id = current_user.id, childage=form.childage.data, childgender=form.childgender.data)
-        db.session.add(children)
-        db.session.commit()
+        if form.childage2.data is not None and form.childgender2.data is not None:
+            children0 = Children(user_id = current_user.id, childage=form.childage0.data, childgender=form.childgender0.data)
+            db.session.add(children0)
+            db.session.commit()
+        if form.childage2.data is not None and form.childgender2.data is not None:
+            children1 = Children(user_id = current_user.id, childage=form.childage1.data, childgender=form.childgender1.data)
+            db.session.add(children1)
+            db.session.commit()
+        if form.childage2.data is not None and form.childgender2.data is not None:
+            children2 = Children(user_id = current_user.id, childage=form.childage2.data, childgender=form.childgender2.data)
+            db.session.add(children2)
+            db.session.commit()
+        if form.childage3.data is not None and form.childgender3.data is not None:
+            children3 = Children(user_id = current_user.id, childage=form.childage3.data, childgender=form.childgender3.data)
+            db.session.add(children3)
+            db.session.commit()
+        if form.childage4.data is not None and form.childgender4.data is not None:
+            children4 = Children(user_id = current_user.id, childage=form.childage4.data, childgender=form.childgender4.data)
+            db.session.add(children4)
+            db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('index'))
     return render_template('basicinfo.html', title='Basicinfo', form=form)
