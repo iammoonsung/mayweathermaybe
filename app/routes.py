@@ -1,4 +1,10 @@
 #-*- coding: utf-8 -*-
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+from loc2cat import loc2cat
 
 from flask import render_template, flash, redirect, url_for
 from app import app
@@ -12,32 +18,29 @@ from flask import request
 from werkzeug.urls import url_parse
 from datetime import datetime, date
 import pandas as pd
+import time
 
 @app.route('/')
 @app.route('/index')
 #@login_required
 def index():
-    #User.query.delete()
-    #Children.query.delete()
-    #Pet.query.delete()
-    #Hobby.query.delete()
-    #Category.query.delete()
-    #Product.query.delete()
-    #Purchase.query.delete()
-    #Liking.query.delete()
-    #db.session.commit()
+
+    starttime = time.time()
     user = User.query.all()
-    children = Children.query.all()
-    pet = Pet.query.all()
-    hobby = Hobby.query.all()
-    #category=db.session.query(Category).get(5)
-    category=Category.query.all()[:5]
-    #category=category.query.all()
-    product=Product.query.all()
-    #liking=db.session.query(Category,Product).filter(Category.id==Product.product_cat).groupby(Category.id)
-    purchase=Purchase.query.all()
-    liking=Liking.query.all()
-    return render_template('index.html', title='home page', User=user, Children=children, Pet=pet, Hobby=hobby,Product=product, Category=category,Purchase=purchase, Liking=liking)
+    usertime = time.time()
+    #catid = loc2cat(50, 127)
+    #category=Category.query.filter_by(Category.id.in_(catid)).all()
+    category=Category.query.limit(5).all()
+    categorytime = time.time()
+    product = []
+    for cate in category:
+        print(cate.id)
+        product +=Product.query.filter(Product.product_cat==cate.id).all()
+    for prod in product:
+        print(prod.product_cat)
+    producttime = time.time()
+    times = [usertime-starttime, categorytime-usertime, producttime-categorytime]
+    return render_template('index.html', title='home page', User=user, Product=product, Category=category, times = times)
 
 @app.route('/profile')
 def profile():
