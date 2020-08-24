@@ -16,7 +16,7 @@ from app.models import User, Children, Pet, Hobby, Category, Product, Purchase, 
 from app import db
 from flask import request
 from werkzeug.urls import url_parse
-from datetime import datetime, date
+from datetime import datetime, date 
 import pandas as pd
 import time
 
@@ -28,16 +28,15 @@ def index():
     starttime = time.time()
     user = User.query.all()
     usertime = time.time()
-    #catid = loc2cat(50, 127)
-    #category=Category.query.filter_by(Category.id.in_(catid)).all()
-    category=Category.query.limit(5).all()
+    catid = loc2cat(60, 127)
+    #category=db.session.query(Category).filter(Category.id in catid).all()
+    category=Category.query.filter(Category.id.in_(catid)).all()
+    #category=Category.query.limit(5).all()
     categorytime = time.time()
     product = []
     for cate in category:
-        print(cate.id)
-        product +=Product.query.filter(Product.product_cat==cate.id).all()
-    for prod in product:
-        print(prod.product_cat)
+        #print(cate.id)
+        product += Product.query.filter(Product.product_cat==cate.id).all()
     producttime = time.time()
     times = [usertime-starttime, categorytime-usertime, producttime-categorytime]
     return render_template('index.html', title='home page', User=user, Product=product, Category=category, times = times)

@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-
 from app import db
 from datetime import datetime, date
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -80,9 +76,10 @@ class Category(db.Model):
     cat4 = db.Column(db.String)
     cat5 = db.Column(db.String)
     cat6 = db.Column(db.String)
+    cat7 = db.Column(db.String)
     
     def __repr__(self):
-        return '<Category {}>'.format(self.cat1,self.cat2,self.cat3,self.cat4,self.cat5, self.cat6)
+        return '<Category {}>'.format(self.cat1,self.cat2,self.cat3,self.cat4,self.cat5, self.cat6, self.cat7)
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
