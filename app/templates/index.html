@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="nav_index">
+    <i class="fas fa-search" style="margin-left: 1.5rem;"></i>
+    <img src="{{ url_for('static', filename='img/Deborah.png') }}" alt="deborah">
+    <i class="fas fa-user" style="margin-right: 1.5rem;"></i>
+</div>
+<div class="container container_main">
+    {% for time in times %}
+    <div><p> time: {{time}} </p></div>
+    {% endfor %}
     {% if current_user.is_anonymous %}
     <h1>You didn't logged in!</h1>
     <div><p><b>LOG in</b> as soon as possible </p></div>
@@ -8,36 +17,81 @@
     <div><p>id is <b>{{ user.identity }}</b></p></div>
     {% endfor %}
     {% else %}
-    <h1>여기가 홈페이지임 o0o!!</h1>
     {% set count = {'value': 0} %}
     {% set count2 = {'value': 0} %}
     {% for category in Category %}
-    <a href="#" class="categories category{{count2.value}}">
-        {% if category.cat6 %}
-            <p>{{ category.cat6 }}</p>
-        {% elif category.cat5 %}
-            <p>{{ category.cat5 }}</p>
-        {% elif category.cat4 %}
-            <p>{{ category.cat4 }}</p>
-        {% else %}
-            <p>{{ category.cat3 }}</p>
-        {% endif %}
-    </a>
-    {% if count.update({'value': (count.value - count.value)}) %} {% endif %}
-    <div class="inside_category products{{count2.value}}">
-        <a href="#" class="gobacks goback{{count2.value}}"><i class="fas fa-arrow-left"></i>&ensp; GOBACK</a><br>
-        {% for product in Product %}
-            {% if product.product_cat == category.id %}
-                {% if count.update({'value': (count.value + 1)}) %} {% endif %}
-                {% if count.value == 6 %}
-                    {% break %} 
-                {% endif %}
-                <a href="https://search.shopping.naver.com/search/all?query={{ product.name }}">{{ product.name }} <img src="{{ product.image }}"> : {{ product.price }}원 // </a><br> 
-            {% endif %}
-        {% endfor %}
-    </div>
-    {% if count2.update({'value': (count2.value + 1)}) %} {% endif %}
+        <a href="#" class="categories category{{count2.value}}">
+            <img src="{{ url_for('static', filename='img/clip.png') }}" alt="clip">
+            <div class="top_category">
+                <div class="title_category">
+                    {% if category.cat7 %}
+                        {{ category.cat7 }}
+                        {% for product in Product %}
+                            {% if product.product_cat == category.id %}
+                            <img src="{{ product.image }}">
+                            {% break %}
+                            {% endif %}
+                        {% endfor %}
+                    {% elif category.cat6 %}
+                        {{ category.cat6 }} 
+                        {% for product in Product %}
+                            {% if product.product_cat == category.id %}
+                            <img src="{{ product.image }}">
+                            {% break %}
+                            {% endif %}
+                        {% endfor %}
+                    {% elif category.cat5 %}
+                        {{ category.cat5 }}
+                        {% for product in Product %}
+                            {% if product.product_cat == category.id %}
+                            <img src="{{ product.image }}">
+                            {% break %}
+                            {% endif %}
+                        {% endfor %} 
+                    {% else %}
+                        {{ category.cat4 }}
+                        {% for product in Product %}
+                            {% if product.product_cat == category.id %}
+                            <img src="{{ product.image }}">
+                            {% break %}
+                            {% endif %}
+                        {% endfor %} 
+                    {% endif %}
+                </div>
+            </div>
+            <div class="bottom_category">
+                <div class="forwhat_category">FOR COSMETICS</div>
+                <i class="fas fa-arrow-right" style="font-weight: 700"></i>
+            </div>
+        </a>
+        {% if count.update({'value': (count.value - count.value)}) %} {% endif %}
+        <div class="inside_category products{{count2.value}}">
+            <div class="container">
+                <div class="nav_inside">
+                    <a href="#" class="gobacks goback{{count2.value}}"><i class="fas fa-arrow-left"></i>&ensp;</a>
+                    <img src="{{ url_for('static', filename='img/Deborah.png') }}" alt="deborah">
+                </div>
+                {% for product in Product %}
+                    {% if product.product_cat == category.id %}
+                        {% if count.update({'value': (count.value + 1)}) %} {% endif %}
+                        {% if count.value == 6 %}
+                            {% break %} 
+                        {% endif %}
+                        <a href="https://search.shopping.naver.com/search/all?query={{ product.name }}" class="categories pack_products" style="margin-bottom: 1rem;">
+                            <img src="{{ product.image }}">
+                            <div class="name_product">{{ product.name }}</div>
+                            <div class="price_product">{{ product.price }}원</div>
+                        </a><br> 
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% if count2.update({'value': (count2.value + 1)}) %} {% endif %}
     {% endfor %}
-
     {% endif %}
+</div>
+<div class="tap_bar">
+    <a class="fas fa-cloud-sun tap_first" href="#" style="color: #a1a1a1;"></a>
+    <a class="fas fa-project-diagram tap_second" href="{{ url_for('index') }}" style="color: black;"></a>
+</div>
 {% endblock %}

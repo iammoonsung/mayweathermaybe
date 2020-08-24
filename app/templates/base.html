@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div>
+    {% block content %}{% endblock %}
+    <div class="container" style="margin-bottom: 3rem;">
         Go to: <a href="{{ url_for('index') }}">Home</a> <a href="{{ url_for('profile') }}">프로필</a>
         {% if current_user.is_anonymous %}
         <a href="{{ url_for('login') }}">Login</a>
@@ -21,7 +22,6 @@
         <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
     </div>
-    {% block content %}{% endblock %}
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
