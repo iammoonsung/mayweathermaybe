@@ -2,6 +2,8 @@ from sqlalchemy import create_engine
 import pandas as pd
 import pymysql
 import fasttext
+import os
+import sys
 
 pymysql.install_as_MySQLdb()
 import MySQLdb
@@ -13,14 +15,14 @@ engine = create_engine((
 conn = engine.connect()
 categorydb = pd.read_sql_table('category', conn)
 
-model = fasttext.load_model('category_classifier_v5.bin')
+model = fasttext.load_model('ccv5.bin')
 
 def find_category(keyword, model = model, catnumber = 1, minscore = 0.3):
     result = []
     category = model.predict(keyword, catnumber)
     for i in range(len(category[0])):
         if category[1][i] >= minscore:
-            result.append(category[0][i].replace('__label__', ''))
+            result.append(category[0][i].replace('__label__', '').replace('_', '/'))
     
     return result
 
