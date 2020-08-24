@@ -55,3 +55,33 @@ function doChild() {
         here.innerHTML += $("#childbox"+i).html();
     }
 }
+
+var lastScrollTop = 0;
+var delta = 5;
+var navbarHeight = $('.nav_index').outerHeight();
+
+var didScroll;
+$(window).scroll(function(event){
+    didScroll = true;
+});
+
+setInterval(function() {
+    if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+    }
+}, 250);
+
+function hasScrolled() {
+    var st = $(this).scrollTop();
+    if (Math.abs(lastScrollTop - st) <= delta)
+        return;
+    if (st > lastScrollTop && st > navbarHeight) {
+        $('.nav_index').removeClass('nav-down').addClass('nav-up');
+    } else {
+        if (st + $(window).height() < $(document).height()) {
+            $('.nav_index').removeClass('nav-up').addClass('nav-down');
+        }
+    }
+    lastScrollTop = st;
+}

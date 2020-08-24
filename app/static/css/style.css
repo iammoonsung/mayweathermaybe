@@ -1,3 +1,134 @@
+body {
+    background-color: white;
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    max-width: 28rem;
+    margin: auto;
+}
+
+.container_main {
+    min-height: 39rem;
+    margin-bottom: 4rem;
+    margin-top: 5.5rem;
+}
+
+.tap_bar {
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 0.8rem 0;
+    display: flex;
+    text-align: center;
+    font-size: 1.3rem;
+    border-top: 2px solid #e4e4e4;
+    z-index: 5;
+}
+
+.tap_first {
+    width: 50%;
+    color: #a1a1a1;
+    border-right: 2px solid #e4e4e4;
+}
+
+.tap_second {
+    width: 50%;
+    color: black;
+}
+
+/*---------- index.html ----------*/
+
+.nav_index {
+    position: fixed;
+    top: 0;
+    height: 2rem;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    padding: 1.1rem 0;
+    border-bottom: 2px solid #e4e4e4;
+    transition: top 0.3s ease-in-out;
+}
+
+.nav-up {
+    top: -4.5rem;
+}
+
+.nav_index img {
+    height: 2.7rem;
+    width: auto;
+}
+
+.categories {
+    display: block;
+    margin: 0 1.4rem 2.5rem 1.4rem;
+    padding: 1.1rem 0.8rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 1.5px 4.5px rgba(0, 0, 0, 0.3);
+}
+
+.categories img {
+    margin-left: -2rem;
+    margin-top: -2.5rem;
+    width: 3rem;
+    height: auto;
+}
+
+.top_category {
+    display: flex;
+    align-items: center;
+    margin-top: -1.5rem;
+}
+
+.title_category {
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: block;
+    margin-left: 1rem;
+}
+
+.title_category img {
+    width: 100%;
+    height: auto;
+    margin: 0.6rem 0;
+    margin-left: -1rem;
+}
+
+.bottom_category {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.forwhat_category {
+    color: #FAE24B;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+.bottom_category i {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.gobacks {
+    font-size: 1.1rem;
+    margin-left: 1rem;
+}
+
 .inside_category {
     overflow: scroll;
     position: fixed;
@@ -10,4 +141,21 @@
     background-color: white;
     z-index: 3;
     transform: translateX(-100%);
+}
+
+.nav_inside {
+    display: flex;
+    padding: 1.1rem;
+    align-items: center;
+}
+
+.nav_inside img {
+    height: 2.7rem;
+    width: auto;
+    margin-left: 6rem;
+}
+
+.pack_products img {
+    width: 100%;
+    height: auto;
 }
